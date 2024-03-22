@@ -16,18 +16,13 @@ import tech.jhipster.config.JHipsterConstants;
 
 public class SqlTestContainersSpringContextCustomizerFactory implements ContextCustomizerFactory {
 
-    private static SQLTCContextCutomeizer sqlTCCustemizer;
-
     @Override
     public ContextCustomizer createContextCustomizer(Class<?> testClass, List<ContextConfigurationAttributes> configAttributes) {
         return getSQLTCContextCustemizer(testClass);
     }
 
     private synchronized ContextCustomizer getSQLTCContextCustemizer(Class<?> testClass) {
-        if (sqlTCCustemizer == null) {
-            sqlTCCustemizer = new SQLTCContextCutomeizer(testClass);
-        }
-        return sqlTCCustemizer;
+        return new SQLTCContextCutomeizer(testClass);
     }
 }
 
@@ -70,5 +65,15 @@ class SQLTCContextCutomeizer implements ContextCustomizer {
             testValues = testValues.and("spring.datasource.password=" + prodTestContainer.getTestContainer().getPassword());
         }
         testValues.applyTo(context);
+    }
+
+    @Override
+    public int hashCode() {
+        return 1;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return true;
     }
 }
